@@ -17,10 +17,10 @@
 // *** remember that we are using free APIs here, and all these APIs have some callback limits, so don't try to call the APIs too many times or don't run a loop for them because if we do so then our account can be blocked and we will also get some error at last. 
 
 
-let h1 = document.querySelector("h1");
-let btn = document.querySelector("button");
-let para = document.getElementById("fact");
-let Img = document.querySelector("img");
+// let h1 = document.querySelector("h1");
+// let btn = document.querySelector("button");
+// let para = document.getElementById("fact");
+// let Img = document.querySelector("img");
 
 // let url = "https://catfact.ninja/fact";
 
@@ -42,19 +42,63 @@ let Img = document.querySelector("img");
 // *** Always remember that we are using free APIs here, and all these APIs have some callback limits, so don't try to call the APIs too many times or don't run a loop for them because if we do so then our account can be blocked and we will also get some error at last. 
 
 
-let url2 = "https://dog.ceo/api/breeds/image/random";
+// let url2 = "https://dog.ceo/api/breeds/image/random";
 
-async function getImage() {
-    try{
-        let res = await axios.get(url2);
-        return res.data.message;
-    }catch(e){
+// async function getImage() {
+//     try{
+//         let res = await axios.get(url2);
+//         return res.data.message;
+//     }catch(e){
+//         console.log("Error -", e);
+//         return "NO Image";
+//     }
+// }
+
+// btn.addEventListener("click", async () => {
+//     let Imag = await getImage();
+//     Img.src = Imag;
+// });
+
+//CODE TO UPDATE QUERY STRINGS
+let btn = document.querySelector("button");
+let Ulist = document.getElementById("list");
+let Inp = document.querySelector('input');
+
+let url = "http://universities.hipolabs.com/search?name=";
+// let country = "india";
+async function getColleges(country) {
+    try {
+        let res = await axios.get(url + country);
+        return res.data;
+    } catch (e) {
         console.log("Error -", e);
-        return "NO Image";
+        return [];
     }
 }
 
 btn.addEventListener("click", async () => {
-    let Imag = await getImage();
-    Img.src = Imag;
+    let country = Inp.value;
+
+    let colArr = await getColleges(country);
+    show(colArr);
 });
+
+Inp.addEventListener("keypress", async (event) => {
+    if (event.key == "Enter") {
+        let country = Inp.value;
+
+        let colArr = await getColleges(country);
+        show(colArr);
+    }
+});
+
+function show(colArr) {
+    Ulist.innerText = "";
+    for (col of colArr) {
+        let item = document.createElement("li");
+        item.innerText = col.name;
+
+        Ulist.append(item);
+        Inp.value = "";
+    }
+}
