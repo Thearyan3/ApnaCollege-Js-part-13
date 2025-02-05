@@ -65,10 +65,9 @@ let Ulist = document.getElementById("list");
 let Inp = document.querySelector('input');
 
 let url = "http://universities.hipolabs.com/search?name=";
-// let country = "india";
-async function getColleges(country) {
+async function getColleges(State) {
     try {
-        let res = await axios.get(url + country);
+        let res = await axios.get(url + State);
         return res.data;
     } catch (e) {
         console.log("Error -", e);
@@ -77,9 +76,9 @@ async function getColleges(country) {
 }
 
 btn.addEventListener("click", async () => {
-    let country = Inp.value;
+    let State = Inp.value;
 
-    let colArr = await getColleges(country);
+    let colArr = await getColleges(State);
     show(colArr);
 });
 
